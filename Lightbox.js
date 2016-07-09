@@ -125,11 +125,6 @@ var Lightbox = React.createClass({
     this.setState({
       isOpen: false,
     }, this.props.onClose);
-    if(this.props.navigator) {
-      var routes = this.props.navigator.getCurrentRoutes();
-      routes.pop();
-      this.props.navigator.immediatelyResetRouteStack(routes);
-    }
   },
 
   render: function() {

@@ -67,6 +67,10 @@ var LightboxOverlay = React.createClass({
   },
 
   componentWillMount: function() {
+    const {navigator, onLeftButton} = this.props;
+    if (navigator && onLeftButton && typeof onLeftButton === 'function') {
+      onLeftButton((next) => this.close(next))
+    }
     this._panResponder = PanResponder.create({
       // Ask to be the responder:
       onStartShouldSetPanResponder: (evt, gestureState) => !this.state.isAnimating,
@@ -111,7 +115,7 @@ var LightboxOverlay = React.createClass({
   },
 
   open: function() {
-    StatusBar.setHidden(true, 'fade');
+    StatusBar.setHidden(Platform.OS === 'ios', 'fade');
     this.state.pan.setValue(0);
     this.setState({
       isAnimating: true,
@@ -128,7 +132,7 @@ var LightboxOverlay = React.createClass({
     ).start(() => this.setState({ isAnimating: false }));
   },
 
-  close: function() {
+  close: function(next) {
     StatusBar.setHidden(false, 'fade');
     this.setState({
       isAnimating: true,
@@ -140,6 +144,7 @@ var LightboxOverlay = React.createClass({
       this.setState({
         isAnimating: false,
       });
+      next && next();
       this.props.onClose();
     });
   },
