@@ -137,16 +137,24 @@ var LightboxOverlay = React.createClass({
     this.setState({
       isAnimating: true,
     });
-    Animated.spring(
-      this.state.openVal,
-      { toValue: 0, ...this.props.springConfig }
-    ).start(() => {
-      this.setState({
-        isAnimating: false,
+    if (this.props.animated) {
+      Animated.spring(
+        this.state.openVal,
+        { toValue: 0, ...this.props.springConfig }
+      ).start(() => {
+        this.closeImmediately(next)
       });
-      next && next();
-      this.props.onClose();
+    } else {
+      this.closeImmediately(next)
+    }
+  },
+
+  closeImmediately(next) {
+    this.setState({
+      isAnimating: false,
     });
+    next && next();
+    this.props.onClose();
   },
 
   componentWillReceiveProps: function(props) {

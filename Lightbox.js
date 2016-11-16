@@ -34,6 +34,7 @@ var Lightbox = React.createClass({
       friction:      PropTypes.number,
     }),
     swipeToDismiss:  PropTypes.bool,
+    animated:        PropTypes.bool,
   },
 
   getDefaultProps: function() {
@@ -79,6 +80,7 @@ var Lightbox = React.createClass({
       backgroundColor: this.props.backgroundColor,
       children: this.getContent(),
       onClose: this.onClose,
+      animated: this.props.animated,
     };
   },
 
